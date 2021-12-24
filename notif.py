@@ -57,8 +57,8 @@ def job():
             for row in ndata.itertuples():
                 send_dm(row.Username, row.ID)
                 print(row.Tweets)
-        else:
-            print("belom ada tweet yg berkaitan : (")
+        # else:
+        #     print("belom ada tweet yg berkaitan : (")
 
 
 # yang pertama
