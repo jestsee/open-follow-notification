@@ -5,11 +5,14 @@ import numpy as np
 import datetime
 import schedule
 import re
+import os
+from dotenv import load_dotenv
 
-consumer_key = "SL7TTEu8JrT0Ornb4xCv4IoX5"
-consumer_secret = "arkgteZxNV3cXjuHSrEkcGE5ArV9HgXZ9tFSqylb8IPbkFBl90"
-access_token = "856252793962856449-MMp1RMouRCG6PkpKFgK7xYluFjC0eMy"
-access_token_secret = "4VTU3H2aRID8exCvZoV1ILzw95XTCjULTdvXS8qVkp4V0"
+load_dotenv()
+consumer_key = os.getenv('CONSUMER_KEY')
+consumer_secret = os.getenv('CONSUMER_SECRET')
+access_token = os.getenv('ACCESS_TOKEN')
+access_token_secret = os.getenv('ACCESS_TOKEN_SECRET')
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -20,7 +23,7 @@ dff = pd.read_csv("twitter.csv")
 
 
 def send_dm(usn, tweet_id):
-    bae = api.get_user(screen_name='baelieves')
+    bae = api.get_user(screen_name=os.getenv('TWITTER_USERNAME'))
     text = 'https://twitter.com/'+usn+'/status/' + str(tweet_id)
     api.send_direct_message(bae.id, text)
 
@@ -57,11 +60,12 @@ def job():
             for row in ndata.itertuples():
                 send_dm(row.Username, row.ID)
                 print(row.Tweets)
-        # else:
-        #     print("belom ada tweet yg berkaitan : (")
+        else:
+            print("belom ada tweet yg berkaitan : (")
 
 
 # yang pertama
+print('opfoll notif is starting...')
 job()
 
 schedule.every(59).seconds.do(job)
